@@ -1,63 +1,68 @@
 const express = require('express')
 const { Sequelize, DataTypes } = require('sequelize')
-const Task = require('./models/task')
+const Funcionario = require('./models/funcionario')
+
+const morgan = require('morgan')
 
 const app = express()
-const sequelize = new Sequelize({ dialect: 'sqlite', storage: './task-list.db' })
-const tasks = Task(sequelize, DataTypes)
+const sequelize = new Sequelize({ dialect: 'sqlite', storage: './funcionario-list.db' })
+const funcionario = Funcionario(sequelize, DataTypes)
+
+// Morgan, log de requisições!
+app.use(morgan('dev'))
 
 // We need to parse JSON coming from requests
 app.use(express.json())
 
-// List tasks
-app.get('/tasks', async (req, res) => {
-  const taskList = await tasks.findAll()
+// List funcionario
+app.get('/funcionario', async (req, res) => {
+  const funcionarioList = await funcionario.findAll()
 
-  res.json({ tasks: taskList })
+  res.json({ funcionario: funcionarioList })
 })
 
-// Create task
-app.post('/tasks', async (req, res) => {
+// Create funcionario
+app.post('/funcionario', async (req, res) => {
   const body = req.body
-  const task = await tasks.create(body)
+  const funcionario = await funcionario.create(body)
 
-  res.json({ task })
+  res.json({ funcionario })
 })
 
-// Show task
-app.get('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id
-  const task = await tasks.findByPk(taskId)
+// Show funcionario
+app.get('/funcionario/:id', async (req, res) => {
+  const funcionarioId = req.params.id
+  const funcionario = await funcionario.findByPk(funcionarioId)
 
-  res.send({ task })
+  res.send({ funcionario })
 })
 
-// Update task
-app.put('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id
+// Update funcionario
+app.put('/funcionario/:id', async (req, res) => {
+  const funcionarioId = req.params.id
   const body = req.body
-  const task = await tasks.findByPk(taskId)
+  const funcionario = await funcionario.findByPk(funcionarioId)
 
-  if (task) {
-    await task.update({ ...body })
-    res.send({ task })
+  if (funcionario) {
+    await funcionario.update({ ...body })
+    res.send({ funcionario })
   } else {
     res.status(404)
-    res.send({ message: 'Task not found' })
+    res.send({ message: 'funcionario não encontrado' })
   }
 })
 
-// Delete task
-app.delete('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id
-  const task = await tasks.findByPk(taskId)
+// Delete funcionario
+app.delete('/funcionario/:id', async (req, res) => {
+  const funcionarioId = req.params.id
+  const funcionario = await funcionario.findByPk(funcionarioId)
 
-  if (task) {
-    await task.destroy()
-    res.send({ task })
+  if (funcionario) {
+    await funcionario.destroy()
+    res.send({ funcionario })
   } else {
     res.status(404)
-    res.send({ message: 'Task not found' })
+    res.send({ message: 'funcionario não encontrado' })
   }
 })
 

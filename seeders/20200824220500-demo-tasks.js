@@ -13,7 +13,7 @@ module.exports = {
      *
     */
 
-    await queryInterface.bulkInsert('Tasks', [{
+    await queryInterface.bulkInsert('Funcionario', [{
       description: 'Batata',
       done: false,
       createdAt: new Date(),
