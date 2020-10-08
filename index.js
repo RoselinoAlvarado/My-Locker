@@ -1,12 +1,12 @@
 const express = require('express')
-const { Sequelize, DataTypes } = require('sequelize')
-const Funcionario = require('./models/funcionario')
+/* const { Sequelize, DataTypes } = require('sequelize') */
+const {Funcionario,sequelize,Sequelize} = require('./models/index')
 
 const morgan = require('morgan')
 
 const app = express()
-const sequelize = new Sequelize({ dialect: 'sqlite', storage: './funcionario-list.db' })
-const funcionario = Funcionario(sequelize, DataTypes)
+/* const sequelize = new Sequelize({ dialect: 'sqlite', storage: './funcionario-list.db' }) */
+const funcionario = Funcionario
 
 // Morgan, log de requisições!
 app.use(morgan('dev'))
@@ -18,13 +18,27 @@ app.use(express.json())
 app.get('/funcionario', async (req, res) => {
   const funcionarioList = await funcionario.findAll()
 
-  res.json({ funcionario: funcionarioList })
+  res.json({ funcionarioss: funcionarioList })
 })
 
 // Create funcionario
 app.post('/funcionario', async (req, res) => {
+  await sequelize.sync()
   const body = req.body
-  const funcionario = await funcionario.create(body)
+  
+  
+  const pessoa = {
+  nome: body.nome,
+  cpf: body.cpf,
+  cargo: body.cargo,
+  telefone: body.telefone,
+  setor: body.setor,
+  data_de_registro: body.data_de_registro
+  } 
+  
+  console.log(pessoa)
+
+  const funcionario = await funcionario.create(pessoa)
 
   res.json({ funcionario })
 })

@@ -14,17 +14,17 @@ module.exports = {
     */
 
     await queryInterface.bulkInsert('Funcionario', [{
-      description: 'Batata',
+      description: 'Juan',
       done: false,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      description: 'Cenoura',
+      description: 'Mario',
       done: false,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      description: 'Maçãs',
+      description: 'Raul',
       done: true,
       createdAt: new Date(),
       updatedAt: new Date()
