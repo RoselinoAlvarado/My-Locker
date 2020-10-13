@@ -18,13 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
     nome: DataTypes.STRING,
     cpf: DataTypes.INTEGER,
     cargo: DataTypes.STRING,
     telefone: DataTypes.INTEGER,
     setor: DataTypes.STRING,
-    data_de_registro: DataTypes.STRING
+    data_de_registro: DataTypes.DATE
   }, 
   {
     sequelize,

@@ -18,7 +18,7 @@ app.use(express.json())
 app.get('/funcionario', async (req, res) => {
   const funcionarioList = await funcionario.findAll()
 
-  res.json({ funcionarioss: funcionarioList })
+  res.json({ funcionariosAll: funcionarioList })
 })
 
 // Create funcionario
@@ -38,7 +38,7 @@ app.post('/funcionario', async (req, res) => {
   
   console.log(pessoa)
 
-  const funcionario = await funcionario.create(pessoa)
+  const personas = await funcionario.create(pessoa)
 
   res.json({ funcionario })
 })
@@ -46,16 +46,26 @@ app.post('/funcionario', async (req, res) => {
 // Show funcionario
 app.get('/funcionario/:id', async (req, res) => {
   const funcionarioId = req.params.id
-  const funcionario = await funcionario.findByPk(funcionarioId)
+  const funcionario = await Funcionario.findByPk(funcionarioId)
+  const body = req.body
+
+  if (funcionario) {
+    await funcionario.get ({ ...body })
+    res.send({ funcionario })
+  } else {
+    res.status(404)
+    res.send({ message: 'funcionario não encontrado' })
+  }
 
   res.send({ funcionario })
+
 })
 
 // Update funcionario
 app.put('/funcionario/:id', async (req, res) => {
   const funcionarioId = req.params.id
   const body = req.body
-  const funcionario = await funcionario.findByPk(funcionarioId)
+  const funcionario = await Funcionario.findByPk(funcionarioId)
 
   if (funcionario) {
     await funcionario.update({ ...body })
@@ -69,7 +79,7 @@ app.put('/funcionario/:id', async (req, res) => {
 // Delete funcionario
 app.delete('/funcionario/:id', async (req, res) => {
   const funcionarioId = req.params.id
-  const funcionario = await funcionario.findByPk(funcionarioId)
+  const funcionario = await Funcionario.findByPk(funcionarioId)
 
   if (funcionario) {
     await funcionario.destroy()
